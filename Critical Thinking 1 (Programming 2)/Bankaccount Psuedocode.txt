@@ -1,0 +1,64 @@
+Class BankAccount:
+	Private firstName: String
+	Private lastName: String
+	Private accountID: Integer
+	Private balance: Double
+
+	Constructor():
+		balance = 0.0
+		firstName = ""
+		lastName = ""
+		accountID = 0
+
+	Method deposit(amount):
+		If amount > 0 Then
+			balance - balance + amount
+		End If
+	Method withdrawl(amount):
+		balance = balance - amount
+
+	Method getBalance():
+		return balance
+
+	Method accountSummary():
+		print firstNAme, lastName, accountID, balance
+End Class
+
+CLASS CheckingAccount INHERITS FROM BankAccount:
+    PRIVATE interestRate: Double
+
+    CONSTRUCTOR(firstName, lastName, accountID, interestRate):
+        CALL SUPER(firstName, lastName, accountID)
+        this.interestRate = interestRate
+
+    // Getter and Setter for interestRate
+
+    METHOD processWithdrawal(amount):
+        SET OVERDRAFT_FEE = 30.0
+
+        IF amount > CALL getBalance() THEN
+            CALL withdrawal(amount + OVERDRAFT_FEE)
+            PRINT "Overdraft notice: $30 fee assessed."
+            PRINT "New negative balance: ", CALL getBalance()
+        ELSE
+            CALL withdrawal(amount)
+            PRINT "Withdrawal successful. Balance: ", CALL getBalance()
+        END IF
+
+    METHOD displayAccount():
+        CALL accountSummary()
+        PRINT "Interest Rate: ", interestRate
+END CLASS
+
+START
+    CREATE checking = NEW CheckingAccount("John", "Doe", 100458, 1.75)
+    CALL checking.displayAccount()
+
+    CALL checking.deposit(150.00)
+    CALL checking.processWithdrawal(50.00)
+
+    // Overdraft test (Attempting to withdraw more than the $100 balance)
+    CALL checking.processWithdrawal(150.00)
+
+    CALL checking.displayAccount()
+END
